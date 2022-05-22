@@ -1,4 +1,0 @@
-var searchIndex = JSON.parse('{\
-"cal":{"doc":"","i":[[4,"Input","cal","",null,null],[13,"Number","","",0,null],[13,"Add","","",0,null],[13,"Subtract","","",0,null],[13,"Multiply","","",0,null],[13,"Divide","","",0,null],[5,"clear","","Clear and position cursor",null,[[]]],[5,"clear_prev","","Clear_prev go to previous line and clear it",null,[[]]],[5,"main","","",null,[[]]],[17,"CSI","","",null,null],[11,"from","","",0,[[]]],[11,"into","","",0,[[]]],[11,"to_string","","",0,[[],["string",3]]],[11,"borrow","","",0,[[]]],[11,"borrow_mut","","",0,[[]]],[11,"try_from","","",0,[[],["result",4]]],[11,"try_into","","",0,[[],["result",4]]],[11,"type_id","","",0,[[],["typeid",3]]],[11,"fmt","","",0,[[["formatter",3]],["result",6]]]],"p":[[4,"Input"]]}\
-}');
-addSearchOptions(searchIndex);initSearch(searchIndex);
