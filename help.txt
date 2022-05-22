@@ -1,0 +1,60 @@
+	Inputs
+		x		variable x
+		pls		(a)+(b), consumes (a) and (b)
+		mns		(a)-(b), consumes (a) and (b)
+		mlt		(a)*(b), consumes (a) and (b)
+		div		(a)/(b), consumes (a) and (b)
+		sqrt	square-root(a), consumes (a)
+		pwr		(a)^(b), consumes (a) and (b)
+		sin		sin(a), consumes (a)
+		<123.45>	enters numeric-value to (a)
+		rnd		random value
+
+	Actions
+		q		quit
+		u		undo, removes last (a)
+		c		clears variable x and history
+		h   	help
+		shw 	show status
+		hst 	show history items with numbers
+		hsth	show history in one line
+		<enter>	refresh screen
+		. 		reprocess program file,
+		
+		cpy 	copy value in item (a) from stack to new (a)
+		rpl 	replace expresion in item (a) in history (hst) with value (b)
+
+		tox 	assigns (a) to variable x, consumes (a)
+		toi 	assigns (a) to variable i, consumes (a)
+		tof 	assigns (a) to variable f, consumes (a)
+		ton 	assigns (a) to variable n, consumes (a)
+		tab 	tabulate based on i, f, n
+		grph	Graph based on i, f, n
+		grphv	Graph with vertical y axe  
+
+
+	
+	Instructions 
+		dsz,label			decrements variable dsz_index, if variable > 1 goto label 
+		dsz,label,variable 	decrements variable, if variable > 1 goto label 
+		sto,variable,value	stores value in variable
+		sto,variable		stores (a) in variable
+		
+		rcl,variable	retrieve variable to (a)
+		prt,variable	print variable
+		prl,literal		print a text
+		pfile,file		Process program file
+		,file			Process program file
+		wrt,file		write current input line to program file
+
+		ltt,label	if (a)<(b) goto label
+		lte,label	if (a)<=(b) goto label
+		gtt,label	if (a)>(b) goto label
+		gte,label	if (a)>=(b) goto label
+		eqq,label	if (a)=(b) goto label
+		neq,label	if (a)<>(b) goto label
+		gto,label	goto label
+		read,variable	reads variable from stdin
+
+		
+		

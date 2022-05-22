@@ -1,0 +1,51 @@
+	1 sto,first_time
+lbl,inicio
+	prl,-
+	prl,Enter.what.unit.you.want.to.convert.from
+	prl,c.=.Celsius
+	prl,f.=.Farenheit
+	prl,q.=.quit
+lbl,leer
+	read,type,nonum
+	gto,leer
+
+lbl,nonum
+	streqq,from_farenheit,type,f
+	streqq,from_celsius,type,c
+	streqq,end,type,q
+	gto,leer
+
+lbl,from_celsius
+	0 sto,first_time
+	prl,Ingrese.grados.Celsius 
+	read,celsius 
+	rcl,celsius
+	9 5 / mlt 32 pls
+	sto,farenheit
+	u,6
+	rcl,farenheit
+	sto,return
+	prt,celsius
+	prt,farenheit
+	gto,inicio
+	
+lbl,from_farenheit
+	0 sto,first_time
+	prl,Ingrese.grados.Farenheit
+	read,farenheit
+	rcl,farenheit
+	32 mns 5 9 div mlt
+	sto,celsius
+	u,6
+	rcl,celsius
+	sto,return
+	prt,farenheit
+	prt,celsius
+	gto,inicio
+
+lbl,end
+	rcl,first_time
+	1	eqq,end2
+	rcl,return
+lbl,end2
+	prl,Please.press.enter

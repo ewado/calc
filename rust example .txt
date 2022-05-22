@@ -1,0 +1,10 @@
+fn foo() -> i32 {
+let a = { return 123; 65 };
+a;
+let vec = vec![123];
+let vec = {
+		let mut v = Vec::new();
+		v.push(123);
+		v
+	};
+}

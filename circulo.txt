@@ -1,0 +1,3 @@
+-4 toi 4 tof
+16 x 2 pwr - sqrt 0 16 x 2 pwr - sqrt -
+grphv

@@ -1,0 +1,11 @@
+sto,i,4 
+
+lbl,aqui 
+	prl,loop
+	prt,i 
+	rcl,i 2 pwr sto,sqr prt,sqr
+	prl,---
+	dsz,aqui,i 
+
+prl,fin
+prt,i

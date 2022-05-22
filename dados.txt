@@ -1,0 +1,15 @@
+prl,juego_de_dados
+
+lbl,volver
+	prl,Ingrese_un_numero
+	read,numero
+	rcl,numero 0.0	eqq,final
+	rnd 10 div sto,cual
+	prt,numero
+	prt,cual
+	rcl,numero rcl,cual eqq,gano
+	gto,volver
+	
+lbl,gano prl,gano!!!!!!
+
+lbl,final prl,***final*** c

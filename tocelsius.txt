@@ -1,0 +1,5 @@
+	32 mns 5 9 div mlt
+	sto,celsius
+	u,6
+	rcl,celsius
+	prt,celsius

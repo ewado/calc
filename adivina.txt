@@ -1,0 +1,35 @@
+	rnd sto,que 
+	sto,count,0
+
+lbl,loop
+	prl,Ingrese_un_valor_(q=quit)
+	read,x1,nonum
+	
+	rcl,count 
+	1 pls 
+	sto,count
+	rcl,x1
+	rcl,que
+	gtt,mayor
+	rcl,x1
+	rcl,que
+	ltt,menor
+	prl,---bien!!---
+	prt,count
+	gto,end
+
+lbl,mayor
+	prl,baje
+	gto,loop
+
+lbl,menor
+	prl,suba
+	gto,loop
+
+lbl,nonum
+	streqq,end,x1,q
+	gto,loop
+
+lbl,end 
+	c
+	prl,---bye-bye---

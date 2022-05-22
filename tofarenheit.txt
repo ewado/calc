@@ -1,0 +1,5 @@
+	9 5 / mlt 32 pls
+	sto,farenheit
+	u,6
+	rcl,farenheit
+	prt,farenheit

@@ -1,0 +1,15 @@
+sto,total,0
+5 sto,variable1
+0 1
+lbl,uno
++
+rcl,total
++
+sto,total
+u
+1
+dsz,uno,variable1
+u
+prt,total
+prt,total
+prt,total

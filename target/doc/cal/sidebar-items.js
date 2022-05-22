@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["CSI",""]],"enum":[["Input",""]],"fn":[["clear","Clear and position cursor"],["clear_prev","Clear_prev go to previous line and clear it"],["main",""]]});

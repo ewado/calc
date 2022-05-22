@@ -1,0 +1,52 @@
+	1 sto,first_time
+lbl,inicio
+	prl,-
+	prl,k-kilograms
+	prl,p-pounds
+	prl,q-quit
+lbl,leer
+	read,type,nonum
+	gto,leer
+
+lbl,nonum
+	streqq,from_kilos,type,k
+	streqq,from_pounds,type,p
+	streqq,end,type,q
+	gto,leer	
+
+lbl,from_kilos
+	0 sto,first_time
+	prl,Ingrese_kilos 
+	read,kilos 
+	rcl,kilos 
+	2.20462262185 
+	mlt 
+	sto,pounds 
+	u,2	//undo_a_b
+	rcl,pounds
+	sto,return
+	prt,kilos 
+	prt,pounds
+	gto,inicio
+
+lbl,from_pounds
+	0 sto,first_time
+	prl,Ingrese_Libras
+	read,pounds	
+	rcl,pounds
+	2.20462262185 
+	div
+	sto,kilos
+	u,2	//undo_a_b
+	rcl,kilos
+	sto,return
+	prt,pounds
+	prt,kilos
+	gto,inicio
+
+lbl,end
+	rcl,first_time
+	1	eqq,end2
+	rcl,return
+lbl,end2
+	prl,--end,-press-enter--

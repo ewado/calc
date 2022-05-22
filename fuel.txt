@@ -1,0 +1,19 @@
+/*
+fuel
+
+Category: fuel consumption
+Conversion: Kilometers Per Liter to Miles Per Gallon US
+The base unit for fuel consumption is kilometers per liter (Non-SI/Derived Unit)
+[Kilometers Per Liter] symbol/abbrevation: (km/L)
+[Miles Per Gallon US] symbol/abbrevation: (MPG[US])
+
+How to convert Kilometers Per Liter to Miles Per Gallon US (km/L to MPG[US])?
+1 km/L = 2.3521442146661 MPG[US].
+1 x 2.3521442146661 MPG[US] = 2.3521442146661 Miles Per Gallon US.
+Always check the results; rounding errors may occur.
+
+Definition:
+In relation to the base unit of [fuel consumption] => (kilometers per liter), 1 Kilometers Per Liter (km/L) is equal to 1 kilometers-per-liter, while 1 Miles Per Gallon US (MPG[US]) = 0.425144 kilometers-per-liter.
+
+
+*/

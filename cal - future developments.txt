@@ -1,0 +1,5 @@
+1  switch dentro del codigo de un programa
+2  send: pop from current cal stack, push to other cal stack
+3  change history numbering to descend to 0 (0 = last value in stack)
+4  copy: pop arg from stack: the count of tail elements on the stack to copy
+5  `:` pop arg from stack: the amount of times to repeat the next operation 
