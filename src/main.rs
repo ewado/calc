@@ -168,14 +168,14 @@ fn parse(input_line: &str) -> Action {
 		"rnd" => Action::Input(Input::Rnd),
 		"sin" => Action::Input(Input::Sin),
 		/* i => Action::Input(
-				Input::Number(i.parse::<f64>().expect("Algo no anduvo"))),  */
+				Input::Number(i.parse::<f64>().expect("Something didn't work"))),  */
 		i => 
 			{
 			let value = i.parse::<f64>();
 			match value 
 				{
 				Ok(i) => Action::Input(Input::Number(i)),
-					//Action::Input(Input::Number(i.parse::<f64>().expect("Algo no anduvo"))),
+					//Action::Input(Input::Number(i.parse::<f64>().expect("Something didn't work"))),
 					
 				Err(_er) => Action::Input(Input::String(i.to_string())),
 				}
@@ -570,35 +570,35 @@ impl CalState {
 	// action undo, undon
 	fn undo(&mut self, value: i32) {
 		for _i in 0..value {
-			self.history.pop().expect("Algo no anduvo en undo");
+			self.history.pop().expect("Something didn't work en undo");
 		}
 		self.recreate();
 	}
 
 	// action toi -- assign to variable x
 	fn to_x(&mut self){
-		self.history.pop().expect("Algo no anduvo"); // remove last value from history		
-		self.variable_x = self.resultado.pop().expect("Algo no anduvo"); // latest value will be x
+		self.history.pop().expect("Something didn't work"); // remove last value from history		
+		self.variable_x = self.resultado.pop().expect("Something didn't work"); // latest value will be x
 		
 		//self.vars.insert("x".to_string(), self.variable_x); //hashmap
 		self.recreate();
 	}
 
 	fn to_i(&mut self) {
-		self.history.pop().expect("Algo no anduvo"); // remove last value from history		
-		self.variable_i = self.resultado.pop().expect("Algo no anduvo"); // latest value will be x
+		self.history.pop().expect("Something didn't work"); // remove last value from history		
+		self.variable_i = self.resultado.pop().expect("Something didn't work"); // latest value will be x
 		self.recreate();
 	}	
 
 	fn to_f(&mut self) {
-		self.history.pop().expect("Algo no anduvo"); // remove last value from history		
-		self.variable_f = self.resultado.pop().expect("Algo no anduvo"); // latest value will be x
+		self.history.pop().expect("Something didn't work"); // remove last value from history		
+		self.variable_f = self.resultado.pop().expect("Something didn't work"); // latest value will be x
 		self.recreate();
 	}
 
 	fn to_n(&mut self) {
-		self.history.pop().expect("Algo no anduvo"); // remove last value from history		
-		self.variable_n = self.resultado.pop().expect("Algo no anduvo") as i32; // latest value will be x
+		self.history.pop().expect("Something didn't work"); // remove last value from history		
+		self.variable_n = self.resultado.pop().expect("Something didn't work") as i32; // latest value will be x
 		self.recreate();
 	}
 
@@ -616,7 +616,7 @@ impl CalState {
 	}
 	
 	fn retrieve_last(&mut self) -> f64 {
-		let last_result = self.resultado.pop().expect("Algo no anduvo");
+		let last_result = self.resultado.pop().expect("Something didn't work");
 		let last_result = last_result as usize;  //  replace with f64 usize function
 		return *self.resultado.get(last_result).unwrap();
 	}
@@ -628,7 +628,7 @@ impl CalState {
 		
 		self.resultado.push(y);
 		
-		self.expresion.pop().expect("Algo no anduvo");
+		self.expresion.pop().expect("Something didn't work");
 		
 		let precision = *(self.vars.get("precision").unwrap()) as usize;
 		let z = format!("{:.*}", precision, y);
@@ -637,7 +637,7 @@ impl CalState {
 		self.expresion.push(z);
 		
 		
-		self.history.pop().expect("Algo no anduvo en copy_value");
+		self.history.pop().expect("Something didn't work en copy_value");
 		self.history.push(Input::Number(y));
 	}
 	
@@ -756,9 +756,9 @@ impl CalState {
 	// action Replace
 	fn replace(&mut self) {
 		// take previous as index and last as value to update vector history
-		let value = self.history.pop().expect("Algo no anduvo");
+		let value = self.history.pop().expect("Something didn't work");
 
- 		if let Some(Input::Number(item)) = Some(self.history.pop().expect("Algo no anduvo")) {
+ 		if let Some(Input::Number(item)) = Some(self.history.pop().expect("Something didn't work")) {
 			let i = item as usize;
 			if let Some(element) = self.history.get_mut(i) {
 				*element = value;
@@ -811,41 +811,41 @@ impl CalState {
 	fn step_resultado(&mut self, act: &Input) {
 		match act {
 			&Input::Add => {
-				let x = self.resultado.pop().expect("Algo no anduvo");
-				let y = self.resultado.pop().expect("Algo no anduvo");
+				let x = self.resultado.pop().expect("Something didn't work");
+				let y = self.resultado.pop().expect("Something didn't work");
 				self.resultado.push(y+x);
 			},
 			&Input::Subtract => {
-				let x = self.resultado.pop().expect("Algo no anduvo");
-				let y = self.resultado.pop().expect("Algo no anduvo");
+				let x = self.resultado.pop().expect("Something didn't work");
+				let y = self.resultado.pop().expect("Something didn't work");
 				self.resultado.push(y-x);
 			},
 			&Input::Multiply => {
-				let x = self.resultado.pop().expect("Algo no anduvo");
-				let y = self.resultado.pop().expect("Algo no anduvo");
+				let x = self.resultado.pop().expect("Something didn't work");
+				let y = self.resultado.pop().expect("Something didn't work");
 				self.resultado.push(y*x);
 			},
 			&Input::Divide => {
-				let x = self.resultado.pop().expect("Algo no anduvo");
-				let y = self.resultado.pop().expect("Algo no anduvo");
+				let x = self.resultado.pop().expect("Something didn't work");
+				let y = self.resultado.pop().expect("Something didn't work");
 				self.resultado.push(y/x);
 			}
 			&Input::Remainder => {
-				let x = self.resultado.pop().expect("Algo no anduvo");
-				let y = self.resultado.pop().expect("Algo no anduvo");
+				let x = self.resultado.pop().expect("Something didn't work");
+				let y = self.resultado.pop().expect("Something didn't work");
 				self.resultado.push(y%x);
 			}
 			&Input::Sqrt => {
-				let x = self.resultado.pop().expect("Algo no anduvo");
+				let x = self.resultado.pop().expect("Something didn't work");
 				self.resultado.push(x.sqrt());
 			}
 			&Input::Pow => {
-				let x = self.resultado.pop().expect("Algo no anduvo");
-				let y = self.resultado.pop().expect("Algo no anduvo");
+				let x = self.resultado.pop().expect("Something didn't work");
+				let y = self.resultado.pop().expect("Something didn't work");
 				self.resultado.push(y.powf(x)); // y elvated to x 
 			}
 			&Input::Sin => {
-				let x = self.resultado.pop().expect("Algo no anduvo");
+				let x = self.resultado.pop().expect("Something didn't work");
 				self.resultado.push(x.sin());
 			}
 			&Input::X => {
@@ -868,41 +868,41 @@ impl CalState {
 	fn step_expresion(&mut self, act: &Input){
 		match act {
 			&Input::Add => {
-				let last = self.expresion.pop().expect("Algo no anduvo");
-				let prev = self.expresion.pop().expect("Algo no anduvo");
+				let last = self.expresion.pop().expect("Something didn't work");
+				let prev = self.expresion.pop().expect("Something didn't work");
 					self.expresion.push(format!("({}+{})", &prev, &last))
 			},
 			&Input::Subtract => {
-				let last = self.expresion.pop().expect("Algo no anduvo");
-				let prev = self.expresion.pop().expect("Algo no anduvo");
+				let last = self.expresion.pop().expect("Something didn't work");
+				let prev = self.expresion.pop().expect("Something didn't work");
 				self.expresion.push(format!("({}-{})", &prev, &last));
 			},
 			&Input::Multiply => {
-				let last = self.expresion.pop().expect("Algo no anduvo");
-				let prev = self.expresion.pop().expect("Algo no anduvo");
+				let last = self.expresion.pop().expect("Something didn't work");
+				let prev = self.expresion.pop().expect("Something didn't work");
 				self.expresion.push(format!("({}*{})", &prev, &last));
 			},
 			&Input::Divide => {
-				let last = self.expresion.pop().expect("Algo no anduvo");
-				let prev = self.expresion.pop().expect("Algo no anduvo");
+				let last = self.expresion.pop().expect("Something didn't work");
+				let prev = self.expresion.pop().expect("Something didn't work");
 				self.expresion.push(format!("({}/{})", &prev, &last));
 			},
 			&Input::Remainder => {
-				let last = self.expresion.pop().expect("Algo no anduvo");
-				let prev = self.expresion.pop().expect("Algo no anduvo");
+				let last = self.expresion.pop().expect("Something didn't work");
+				let prev = self.expresion.pop().expect("Something didn't work");
 				self.expresion.push(format!("({}%{})", &prev, &last));
 			},
 			&Input::Sqrt => {
-				let last = self.expresion.pop().expect("Algo no anduvo");
+				let last = self.expresion.pop().expect("Something didn't work");
 				self.expresion.push(format!("sqrt({})", &last));
 			},
 			&Input::Pow => {
-				let last = self.expresion.pop().expect("Algo no anduvo");
-				let prev = self.expresion.pop().expect("Algo no anduvo");
+				let last = self.expresion.pop().expect("Something didn't work");
+				let prev = self.expresion.pop().expect("Something didn't work");
 				self.expresion.push(format!("pwr({},{})", &prev, &last));
 			},
 						&Input::Sin => {
-				let last = self.expresion.pop().expect("Algo no anduvo");
+				let last = self.expresion.pop().expect("Something didn't work");
 				self.expresion.push(format!("sin({})", &last));
 			},
 			&Input::X => {
@@ -947,9 +947,9 @@ impl CalState {
 	
 	fn write_file(&self, filename: &str) {		
 
-		let mut file = File::create(filename).expect("Algo no anduvo");
+		let mut file = File::create(filename).expect("Something didn't work");
 
-		writeln!(&mut file, "{}", &self.save_line).expect("Algo no anduvo");
+		writeln!(&mut file, "{}", &self.save_line).expect("Something didn't work");
 		
 		print!("File {} saved\n> ", filename);
 		io::stdout().flush().unwrap();
@@ -1022,40 +1022,40 @@ impl CalState {
 								},
 								// ltt,labelname    prev less-than last
 								Instruction::Ltt => {
-									let value2 = self.resultado.pop().expect("Algo no anduvo");
-									let value1 = self.resultado.pop().expect("Algo no anduvo");
-									self.history.pop().expect("Algo no anduvo"); // remove last value from history
-									self.history.pop().expect("Algo no anduvo"); // remove last value from history
+									let value2 = self.resultado.pop().expect("Something didn't work");
+									let value1 = self.resultado.pop().expect("Something didn't work");
+									self.history.pop().expect("Something didn't work"); // remove last value from history
+									self.history.pop().expect("Something didn't work"); // remove last value from history
 									if value1 < value2 {
 										self.find_label(&instruction, &commands, &mut change_control);
 										self.recreate();
 									}
 								},
 								Instruction::Lte => {
-									let value2 = self.resultado.pop().expect("Algo no anduvo");
-									let value1 = self.resultado.pop().expect("Algo no anduvo");
-									self.history.pop().expect("Algo no anduvo"); // remove last value from history
-									self.history.pop().expect("Algo no anduvo"); // remove last value from history
+									let value2 = self.resultado.pop().expect("Something didn't work");
+									let value1 = self.resultado.pop().expect("Something didn't work");
+									self.history.pop().expect("Something didn't work"); // remove last value from history
+									self.history.pop().expect("Something didn't work"); // remove last value from history
 									if value1 <= value2 {
 										self.find_label(&instruction, &commands, &mut change_control);
 										self.recreate();
 									}
 								},
 								Instruction::Gtt => {
-									let value2 = self.resultado.pop().expect("Algo no anduvo");
-									let value1 = self.resultado.pop().expect("Algo no anduvo");
-									self.history.pop().expect("Algo no anduvo"); // remove last value from history
-									self.history.pop().expect("Algo no anduvo"); // remove last value from history
+									let value2 = self.resultado.pop().expect("Something didn't work");
+									let value1 = self.resultado.pop().expect("Something didn't work");
+									self.history.pop().expect("Something didn't work"); // remove last value from history
+									self.history.pop().expect("Something didn't work"); // remove last value from history
 									if value1 > value2 {
 										self.find_label(&instruction, &commands, &mut change_control);
 										self.recreate();
 									}
 								},
 								Instruction::Gte => {
-									let value2 = self.resultado.pop().expect("Algo no anduvo");
-									let value1 = self.resultado.pop().expect("Algo no anduvo");
-									self.history.pop().expect("Algo no anduvo"); // remove last value from history
-									self.history.pop().expect("Algo no anduvo"); // remove last value from history
+									let value2 = self.resultado.pop().expect("Something didn't work");
+									let value1 = self.resultado.pop().expect("Something didn't work");
+									self.history.pop().expect("Something didn't work"); // remove last value from history
+									self.history.pop().expect("Something didn't work"); // remove last value from history
 									if value1 >= value2 {
 										self.find_label(&instruction, &commands, &mut change_control);
 										self.recreate();
@@ -1063,20 +1063,20 @@ impl CalState {
 								},
 								// eqq,labelname 
 								Instruction::Eqq => {
-									let value2 = self.resultado.pop().expect("Algo no anduvo");
-									let value1 = self.resultado.pop().expect("Algo no anduvo");
-									self.history.pop().expect("Algo no anduvo"); // remove last value from history
-									self.history.pop().expect("Algo no anduvo"); // remove last value from history
+									let value2 = self.resultado.pop().expect("Something didn't work");
+									let value1 = self.resultado.pop().expect("Something didn't work");
+									self.history.pop().expect("Something didn't work"); // remove last value from history
+									self.history.pop().expect("Something didn't work"); // remove last value from history
 									if value1 == value2 {
 										self.find_label(&instruction, &commands, &mut change_control);
 										self.recreate();
 									}
 								},
 								Instruction::Neq => {
-									let value2 = self.resultado.pop().expect("Algo no anduvo");
-									let value1 = self.resultado.pop().expect("Algo no anduvo");
-									self.history.pop().expect("Algo no anduvo"); // remove last value from history
-									self.history.pop().expect("Algo no anduvo"); // remove last value from history
+									let value2 = self.resultado.pop().expect("Something didn't work");
+									let value1 = self.resultado.pop().expect("Something didn't work");
+									self.history.pop().expect("Something didn't work"); // remove last value from history
+									self.history.pop().expect("Something didn't work"); // remove last value from history
 									if value1 != value2 {
 										self.find_label(&instruction, &commands, &mut change_control);
 										self.recreate();
@@ -1090,13 +1090,13 @@ impl CalState {
 								Instruction::Sto => {
 									if let Some(varname) = &instruction.get(1) {
 										if let Some(strvalue) = &instruction.get(2) {
-											let value = strvalue.parse::<f64>().expect("Algo no anduvo");
+											let value = strvalue.parse::<f64>().expect("Something didn't work");
 											self.vars.insert(varname.to_string(), value); //.expect("algo no anda por aca"); // insert hashmap
 											
 										}
 										else {
-											self.history.pop().expect("Algo no anduvo"); // remove last value from history
-											let value = self.resultado.pop().expect("Algo no anduvo");
+											self.history.pop().expect("Something didn't work"); // remove last value from history
+											let value = self.resultado.pop().expect("Something didn't work");
 											self.vars.insert(varname.to_string(), value); //.expect("algo no anda por aca"); // insert hashmap
 											self.recreate();
 										}
@@ -1172,7 +1172,7 @@ impl CalState {
 												}
 											},
 										}										
-										//let value = strvalue.trim().parse::<f64>().expect("Algo no anduvo");
+										//let value = strvalue.trim().parse::<f64>().expect("Something didn't work");
 										//self.vars.insert(varname.to_string(), value);
 									}
 								},
@@ -1180,7 +1180,7 @@ impl CalState {
 								// extension is always txt but doesn't have to be entered
 								Instruction::Run => {
 									if let Some(filename) = &instruction.get(1) {
-										let filename_str = format!("{}.txt",filename.to_string());
+										let filename_str = format!("programs/{}.txt",filename.to_string());
 										self.process_file(&filename_str);
 										self.show_results_expressions = false; // cancels all possible trues
 									}
@@ -1188,7 +1188,7 @@ impl CalState {
 								// writes a file 
 								Instruction::Wrt => {
 									if let Some(filename) = &instruction.get(1) {
-										let filename_str = format!("{}.txt",filename.to_string());
+										let filename_str = format!("programs/{}.txt",filename.to_string());
 										self.write_file(&filename_str);
 										self.show_results_expressions = false;
 									}
@@ -1196,7 +1196,7 @@ impl CalState {
 								// undo,n
 								Instruction::UndoN => {
 									if let Some(strvalue) = &instruction.get(1) {
-										let value = strvalue.parse::<i32>().expect("Algo no anduvo");
+										let value = strvalue.parse::<i32>().expect("Something didn't work");
 										self.undo(value);
 									}
 								}
@@ -1398,7 +1398,7 @@ fn main_loop() {
 	loop {
 //Read
 		input_line.clear();
-		io::stdin().read_line(&mut input_line).expect("Algo no anduvo");
+		io::stdin().read_line(&mut input_line).expect("Something didn't work");
 
 // switch only word in line. Manual entry.
 		if input_line.trim() == SWITCH {
