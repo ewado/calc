@@ -34,7 +34,7 @@ enum Action {
 	ProcessFile,
 	ReprocessFile,
 	TotalSum,
-	Send, //to communication area
+	Sum, //to communication area
 }
 
 #[derive(Clone)]
@@ -153,8 +153,8 @@ fn parse(input_line: &str) -> Action {
 		"grphv" => Action::GraphVertical, // x horizontal y vertical 
 		"pfile" => Action::ProcessFile,
 		"." => Action::ReprocessFile,
-		"sum" => Action::TotalSum,  // Shows the total sum of all values 
-		"send" => Action::Send, // to communication area
+		"tsum" => Action::TotalSum,  // Shows the total sum of all values -- to remove or replace 2022-05-05 
+		"sum" => Action::Sum, // to communication area
 
 		// Inputs -- operand, operator, function. They stay in the history
 		"x" => Action::Input(Input::X), // enter parameter x
@@ -769,7 +769,7 @@ impl CalState {
 		}; 
 	}
 
-	// action TotalSum
+	// action TotalSum -- to remove or replace
 	fn total_sum(&self) {
 		let mut total: f64 = 0.0;
 		for s in &self.resultado {
@@ -780,7 +780,7 @@ impl CalState {
 		io::stdout().flush().unwrap();
 	}
 
-	// action Send -- for now it sends the total sum to the opposite calculator
+	// action Sum -- sends the total sum to the opposite calculator
 	fn to_communication_area(&mut self) {
 		let mut total: f64 = 0.0;
 		for s in &self.resultado {
@@ -1294,7 +1294,7 @@ impl CalState {
 					self.show_results_expressions = false;
 				},
 				
-				Action::Send => {
+				Action::Sum => {
 					self.to_communication_area();
 					self.show_results_expressions = true;
 				},
