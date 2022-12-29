@@ -8,7 +8,7 @@ use std::fs::File;
 use std::fmt;
 use std::collections::HashMap;
 //use std::cmp::Reverse;
-// no changes
+
 //use std::str::FromStr;
 //use std::num::ParseIntError;
 
@@ -812,27 +812,57 @@ impl CalState {
 		match act {
 			&Input::Add => {
 				let x = self.resultado.pop().expect("Something didn't work");
-				let y = self.resultado.pop().expect("Something didn't work");
+				//let y = self.resultado.pop().expect("Something didn't work");
+				let y = match self.resultado.pop() {
+					Some(top) => top, 
+					None => {
+						0.0 as f64
+					}
+				};
 				self.resultado.push(y+x);
 			},
 			&Input::Subtract => {
 				let x = self.resultado.pop().expect("Something didn't work");
-				let y = self.resultado.pop().expect("Something didn't work");
+				//let y = self.resultado.pop().expect("Something didn't work");
+				let y = match self.resultado.pop() {
+					Some(top) => top, 
+					None => {
+						0.0 as f64
+					}
+				};
 				self.resultado.push(y-x);
 			},
 			&Input::Multiply => {
 				let x = self.resultado.pop().expect("Something didn't work");
-				let y = self.resultado.pop().expect("Something didn't work");
+				//let y = self.resultado.pop().expect("Something didn't work");
+				let y = match self.resultado.pop() {
+					Some(top) => top, 
+					None => {
+						1.0 as f64
+					}
+				};
 				self.resultado.push(y*x);
 			},
 			&Input::Divide => {
 				let x = self.resultado.pop().expect("Something didn't work");
-				let y = self.resultado.pop().expect("Something didn't work");
+				//let y = self.resultado.pop().expect("Something didn't work");
+				let y = match self.resultado.pop() {
+					Some(top) => top, 
+					None => {
+						1.0 as f64
+					}
+				};
 				self.resultado.push(y/x);
 			}
 			&Input::Remainder => {
 				let x = self.resultado.pop().expect("Something didn't work");
-				let y = self.resultado.pop().expect("Something didn't work");
+				//let y = self.resultado.pop().expect("Something didn't work");
+				let y = match self.resultado.pop() {
+					Some(top) => top, 
+					None => {
+						1.0 as f64
+					}
+				};
 				self.resultado.push(y%x);
 			}
 			&Input::Sqrt => {
@@ -841,7 +871,13 @@ impl CalState {
 			}
 			&Input::Pow => {
 				let x = self.resultado.pop().expect("Something didn't work");
-				let y = self.resultado.pop().expect("Something didn't work");
+				//let y = self.resultado.pop().expect("Something didn't work");
+				let y = match self.resultado.pop() {
+					Some(top) => top, 
+					None => {
+						1.0 as f64
+					}
+				};
 				self.resultado.push(y.powf(x)); // y elvated to x 
 			}
 			&Input::Sin => {
@@ -869,27 +905,57 @@ impl CalState {
 		match act {
 			&Input::Add => {
 				let last = self.expresion.pop().expect("Something didn't work");
-				let prev = self.expresion.pop().expect("Something didn't work");
+				//let prev = self.expresion.pop().expect("Something didn't work");
+				let prev = match self.expresion.pop() {
+					Some(top) => top, 
+					None => {
+						"0".to_string()
+					}
+				};
 					self.expresion.push(format!("({}+{})", &prev, &last))
 			},
 			&Input::Subtract => {
 				let last = self.expresion.pop().expect("Something didn't work");
-				let prev = self.expresion.pop().expect("Something didn't work");
+				//let prev = self.expresion.pop().expect("Something didn't work");
+				let prev = match self.expresion.pop() {
+					Some(top) => top, 
+					None => {
+						"0".to_string()
+					}
+				};
 				self.expresion.push(format!("({}-{})", &prev, &last));
 			},
 			&Input::Multiply => {
 				let last = self.expresion.pop().expect("Something didn't work");
-				let prev = self.expresion.pop().expect("Something didn't work");
+				//let prev = self.expresion.pop().expect("Something didn't work");
+				let prev = match self.expresion.pop() {
+					Some(top) => top, 
+					None => {
+						"1".to_string()
+					}
+				};
 				self.expresion.push(format!("({}*{})", &prev, &last));
 			},
 			&Input::Divide => {
 				let last = self.expresion.pop().expect("Something didn't work");
-				let prev = self.expresion.pop().expect("Something didn't work");
+				//let prev = self.expresion.pop().expect("Something didn't work");
+				let prev = match self.expresion.pop() {
+					Some(top) => top, 
+					None => {
+						"1".to_string()
+					}
+				};
 				self.expresion.push(format!("({}/{})", &prev, &last));
 			},
 			&Input::Remainder => {
 				let last = self.expresion.pop().expect("Something didn't work");
-				let prev = self.expresion.pop().expect("Something didn't work");
+				//let prev = self.expresion.pop().expect("Something didn't work");
+				let prev = match self.expresion.pop() {
+					Some(top) => top, 
+					None => {
+						"1".to_string()
+					}
+				};
 				self.expresion.push(format!("({}%{})", &prev, &last));
 			},
 			&Input::Sqrt => {
@@ -898,7 +964,13 @@ impl CalState {
 			},
 			&Input::Pow => {
 				let last = self.expresion.pop().expect("Something didn't work");
-				let prev = self.expresion.pop().expect("Something didn't work");
+				//let prev = self.expresion.pop().expect("Something didn't work");
+				let prev = match self.expresion.pop() {
+					Some(top) => top, 
+					None => {
+						"1".to_string()
+					}
+				};
 				self.expresion.push(format!("pwr({},{})", &prev, &last));
 			},
 						&Input::Sin => {
