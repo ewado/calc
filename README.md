@@ -1,5 +1,4 @@
-# calc
-Programmable RPN Calculator
+# calc - Programmable RPN Calculator
 Runs in the console
 Bash Linux, 
 Android or Windows terminal 
