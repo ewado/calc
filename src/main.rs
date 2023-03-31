@@ -1,4 +1,5 @@
 extern crate rand;
+// 2023-03-31 EP: Latest version, including end of stack failure prevention.
 //use rand::prelude::*;
 use std::io;
 use std::io::Write;
@@ -11,6 +12,7 @@ use std::collections::HashMap;
 
 //use std::str::FromStr;
 //use std::num::ParseIntError;
+use std::process::Command;
 
 enum Action {
 	Input(Input),
@@ -34,7 +36,8 @@ enum Action {
 	ProcessFile,
 	ReprocessFile,
 	TotalSum,
-	Sum, //to communication area
+	Sum, // to communication area
+	ListPrograms, // list program files 
 }
 
 #[derive(Clone)]
@@ -155,6 +158,7 @@ fn parse(input_line: &str) -> Action {
 		"." => Action::ReprocessFile,
 		"tsum" => Action::TotalSum,  // Shows the total sum of all values -- to remove or replace 2022-05-05 
 		"sum" => Action::Sum, // to communication area
+		"lst" => Action::ListPrograms, // list program files
 
 		// Inputs -- operand, operator, function. They stay in the history
 		"x" => Action::Input(Input::X), // enter parameter x
@@ -780,6 +784,15 @@ impl CalState {
 		io::stdout().flush().unwrap();
 	}
 
+	// Action List program files - Open an explorer session in windows
+	fn list_programs(&self) {
+		println!( "Opening" );
+		Command::new( "explorer" )
+        .arg( ".\\programs" ) // <- Specify the directory you'd like to open.
+        .spawn( )
+        .unwrap( );
+	}
+
 	// action Sum -- sends the total sum to the opposite calculator
 	fn to_communication_area(&mut self) {
 		let mut total: f64 = 0.0;
@@ -1368,6 +1381,11 @@ impl CalState {
 				
 				Action::Sum => {
 					self.to_communication_area();
+					self.show_results_expressions = true;
+				},
+				
+				Action::ListPrograms => {
+					self.list_programs();
 					self.show_results_expressions = true;
 				},
 				
