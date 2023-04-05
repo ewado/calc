@@ -786,11 +786,12 @@ impl CalState {
 
 	// Action List program files - Open an explorer session in windows
 	fn list_programs(&self) {
-		println!( "Opening" );
-		Command::new( "explorer" )
-        .arg( ".\\programs" ) // <- Specify the directory you'd like to open.
-        .spawn( )
-        .unwrap( );
+		println!("List program functionality not enabled");
+		//println!( "Opening" );
+		//Command::new( "explorer" )
+        //.arg( ".\\programs" ) // <- Specify the directory you'd like to open.
+        //.spawn( )
+        //.unwrap( );
 	}
 
 	// action Sum -- sends the total sum to the opposite calculator
@@ -840,7 +841,8 @@ impl CalState {
 				let y = match self.resultado.pop() {
 					Some(top) => top, 
 					None => {
-						0.0 as f64
+						//0.0 as f64
+						x+x
 					}
 				};
 				self.resultado.push(y-x);
@@ -862,7 +864,8 @@ impl CalState {
 				let y = match self.resultado.pop() {
 					Some(top) => top, 
 					None => {
-						1.0 as f64
+						//1.0 as f64
+						(x*x) as f64
 					}
 				};
 				self.resultado.push(y/x);
@@ -931,12 +934,15 @@ impl CalState {
 				let last = self.expresion.pop().expect("Something didn't work");
 				//let prev = self.expresion.pop().expect("Something didn't work");
 				let prev = match self.expresion.pop() {
-					Some(top) => top, 
+					//Some(top) => top, 
+					Some(top) => format!("({}-{})", top, &last),
 					None => {
-						"0".to_string()
+						//"0".to_string()
+						last
 					}
 				};
-				self.expresion.push(format!("({}-{})", &prev, &last));
+				//self.expresion.push(format!("({}-{})", &prev, &last));
+				self.expresion.push(prev);
 			},
 			&Input::Multiply => {
 				let last = self.expresion.pop().expect("Something didn't work");
