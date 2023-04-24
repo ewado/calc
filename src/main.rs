@@ -12,7 +12,7 @@ use std::collections::HashMap;
 
 //use std::str::FromStr;
 //use std::num::ParseIntError;
-use std::process::Command;
+//use std::process::Command; //used for list files - explorer
 
 enum Action {
 	Input(Input),
@@ -786,9 +786,9 @@ impl CalState {
 
 	// Action List program files - Open an explorer session in windows
 	fn list_programs(&self) {
-		println!("List program functionality not enabled");
-		//println!( "Opening" );
-		//Command::new( "explorer" )
+	//	println!( "Opening" );
+		println!( "List files not enabled" );
+	//	Command::new( "explorer" )
         //.arg( ".\\programs" ) // <- Specify the directory you'd like to open.
         //.spawn( )
         //.unwrap( );
@@ -923,12 +923,15 @@ impl CalState {
 				let last = self.expresion.pop().expect("Something didn't work");
 				//let prev = self.expresion.pop().expect("Something didn't work");
 				let prev = match self.expresion.pop() {
-					Some(top) => top, 
+					//Some(top) => top, 
+					Some(top) => format!("({}+{})", top, &last),
 					None => {
-						"0".to_string()
+						//"0".to_string()
+						last
 					}
 				};
-					self.expresion.push(format!("({}+{})", &prev, &last))
+				//self.expresion.push(format!("({}+{})", &prev, &last))
+				self.expresion.push(prev);
 			},
 			&Input::Subtract => {
 				let last = self.expresion.pop().expect("Something didn't work");
@@ -948,23 +951,29 @@ impl CalState {
 				let last = self.expresion.pop().expect("Something didn't work");
 				//let prev = self.expresion.pop().expect("Something didn't work");
 				let prev = match self.expresion.pop() {
-					Some(top) => top, 
+					//Some(top) => top, 
+					Some(top) => format!("({}*{})", top, &last),
 					None => {
-						"1".to_string()
+						//"1".to_string()
+						last
 					}
 				};
-				self.expresion.push(format!("({}*{})", &prev, &last));
+				//self.expresion.push(format!("({}*{})", &prev, &last));
+				self.expresion.push(prev);
 			},
 			&Input::Divide => {
 				let last = self.expresion.pop().expect("Something didn't work");
 				//let prev = self.expresion.pop().expect("Something didn't work");
 				let prev = match self.expresion.pop() {
-					Some(top) => top, 
+					//Some(top) => top, 
+					Some(top) => format!("({}/{})", top, &last),
 					None => {
-						"1".to_string()
+						//"1".to_string()
+						last
 					}
 				};
-				self.expresion.push(format!("({}/{})", &prev, &last));
+				//self.expresion.push(format!("({}/{})", &prev, &last));
+				self.expresion.push(prev);
 			},
 			&Input::Remainder => {
 				let last = self.expresion.pop().expect("Something didn't work");
