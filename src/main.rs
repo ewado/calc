@@ -251,7 +251,7 @@ impl CalState {
 
 		let mut printing_x: String;
 		let mut subtotal: f64;
-		let mut expresion2: String = String::from(" ");
+		let mut expresion2: String; // = String::from(" ");
 
 		subtotal = 0.;
 		const COLUMN_WIDE: usize = 8;
@@ -279,15 +279,17 @@ impl CalState {
 			}
 			else {
 				printing_x = String::from(" ");
-				// 2023-06-27 EP: Don't print simple expressions
-				if expresion.find('(') == None {
-					expresion2 = String::from(" ");
-				}
-				else { 
-						expresion2 = expresion.to_string();
-					}
-				
 			}
+
+			// 2023-06-27 EP: Don't print simple expressions
+			if expresion.find('(') == None && expresion.find('x') == None {
+				expresion2 = String::from(" ");
+			}
+			else { 
+					expresion2 = expresion.to_string();
+			}
+				
+			
 			
 			
 			//let mut result_str = format!("{0:.5}",value);
@@ -323,7 +325,7 @@ impl CalState {
 			let spaces_before_subtotal = " ".repeat(num_subtotal);
 			subtotal_str = subtotal_str.replace(".00","   ");
 
-			cprintln!("<black!>#{:0>2}</>  {}{}{}<black!>{}      {}</>  {}", i , spaces_before_result, result_str, spaces_before_subtotal, subtotal_str,  expresion2, printing_x);
+			cprintln!("<black!>#{:0>2}</>  {}{}{}<black!>{}      {}  {}</>", i , spaces_before_result, result_str, spaces_before_subtotal, subtotal_str,  expresion2, printing_x);
 
 		} // End for loop
 		
