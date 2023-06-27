@@ -1,4 +1,5 @@
 extern crate rand;
+extern crate color_print;
 // 2023-03-31 EP: Latest version, including end of stack failure prevention.
 //use rand::prelude::*;
 use std::io;
@@ -8,6 +9,8 @@ use std::fs::File;
 //use std::io::prelude::*;
 use std::fmt;
 use std::collections::HashMap;
+use color_print::cprintln;
+
 //use std::cmp::Reverse;
 
 //use std::str::FromStr;
@@ -240,13 +243,16 @@ struct CalState {
 }
 
 impl CalState {
-	
+	// 2023-06-22 EP: Print lines with values, subtotals and expressions
 	fn display_results_expressions(&self) {
 		
 
 		//	clear_screen();  // commented 2021-05-08
 
-		let mut printing_x: String;	
+		let mut printing_x: String;
+		let mut subtotal: f64;
+		subtotal = 0.;
+		const COLUMN_WIDE: usize = 8;
 		
 		let iter = self.resultado
 			.iter()
@@ -256,8 +262,8 @@ impl CalState {
 		let precision = *(self.vars.get("precision").unwrap()) as usize;
 		
 		
-		for (i, (r, e)) in iter {
-			if e.find('x') != None {
+		for (i, (value, expresion)) in iter {
+			if expresion.find('x') != None {
 				
 				//let mut var_x = format!("{0:.5}",self.variable_x);
 				let mut var_x = format!("{:.*}", precision, self.variable_x);
@@ -273,23 +279,41 @@ impl CalState {
 			}
 			
 			
-			//let mut result_str = format!("{0:.5}",r);
-			let mut result_str = format!("{:.*}", precision, r);
-			if result_str.find('.') != None {
-				result_str = result_str.trim_end_matches('0').to_string();
-				result_str = result_str.trim_end_matches('.').to_string();
-			}
+			//let mut result_str = format!("{0:.5}",value);
+			let mut result_str = format!("{:.*}", precision, value);
+			// remove decimal part
+			//if result_str.find('.') != None {
+			//	result_str = result_str.trim_end_matches('0').to_string();
+			//	result_str = result_str.trim_end_matches('.').to_string();
+			//}
+			
 			
 			
 			let mut num: usize = 2;
-			if result_str.len() < 6 + precision {
-				num = 6 + precision - result_str.len();
+			if result_str.len() < COLUMN_WIDE + precision {
+				num = COLUMN_WIDE + precision - result_str.len();
 			}
-			let spaces_after_result = " ".repeat(num);
-			
+			let spaces_before_result = " ".repeat(num);
+			result_str = result_str.replace(".00","   ");
 
-			println!("#{:0>2}  {}{}{}  {}", i , result_str, spaces_after_result, e, printing_x);
-			
+			subtotal = subtotal + value;
+
+			let mut subtotal_str = format!("{:.*}", precision, subtotal);
+			// remove decimal part
+			//if subtotal_str.find('.') != None {
+			//	subtotal_str = subtotal_str.trim_end_matches('0').to_string();
+			//	subtotal_str = subtotal_str.trim_end_matches('.').to_string();
+			//}
+
+			let mut num_subtotal: usize = 2;
+			if subtotal_str.len() < COLUMN_WIDE + precision {
+				num_subtotal = COLUMN_WIDE + precision - subtotal_str.len();
+			}
+			let spaces_before_subtotal = " ".repeat(num_subtotal);
+			subtotal_str = subtotal_str.replace(".00","   ");
+
+			cprintln!("<black!>#{:0>2}</>  {}{}{}<black!>{}      '{}'</>  {}", i , spaces_before_result, result_str, spaces_before_subtotal, subtotal_str,  expresion, printing_x);
+
 		} // End for loop
 		
 		/* print!("\n> ");
@@ -317,18 +341,18 @@ impl CalState {
 		if var_x.len() < 6 + precision {
 			num = 6 + precision - var_x.len();
 		}
-		let spaces_after_x = " ".repeat(num);
+		let spaces_before_x = " ".repeat(num);
 			
 			
-		for (_i, (r, e)) in iter {
-			let mut result_str = format!("{:.*}", precision, r);
+		for (_i, (value, expresion)) in iter {
+			let mut result_str = format!("{:.*}", precision, value);
 			if result_str.find('.') != None {
 				result_str = result_str.trim_end_matches('0').to_string();
 				result_str = result_str.trim_end_matches('.').to_string();
 			}
 
-			println!("y={}  x={}{}y={}", e, var_x, spaces_after_x, result_str);
-			//println!("y={}    x={}    y={}", e, self.variable_x.to_string(), r);
+			println!("y={}  x={}{}y={}", expresion, var_x, spaces_before_x, result_str);
+			//println!("y={}    x={}    y={}", expresion, self.variable_x.to_string(), value);
 		}
 		
 		//io::stdout().flush().unwrap();
@@ -342,13 +366,13 @@ impl CalState {
 			//.zip(self.expresion.iter())
 			.enumerate();
 
-		for (_i, r) in iter1 {
-			if r < &self.min_y && r.is_infinite() == false {
-				self.min_y = *r;
+		for (_i, value) in iter1 {
+			if value < &self.min_y && value.is_infinite() == false {
+				self.min_y = *value;
 				
 			}
-			if r > &self.max_y && r.is_infinite() == false {
-				self.max_y = *r;
+			if value > &self.max_y && value.is_infinite() == false {
+				self.max_y = *value;
 				
 			}
 		}
@@ -453,18 +477,18 @@ impl CalState {
 
 
 			
-		for (_ii, mut r) in iter {
+		for (_ii, mut value) in iter {
 			// give proportion
-			if r.is_infinite() == true {
-				if r.is_sign_negative() == true {
-					r = &self.max_y;
+			if value.is_infinite() == true {
+				if value.is_sign_negative() == true {
+					value = &self.max_y;
 				}
 				else {
-					r = &self.min_y;
+					value = &self.min_y;
 				}
 			};
 			
-			let yy = (((r - &self.min_y)/(&self.max_y - &self.min_y)) * &MAXY).floor();
+			let yy = (((value - &self.min_y)/(&self.max_y - &self.min_y)) * &MAXY).floor();
 			let zz = ((( - &self.min_y)/(&self.max_y - &self.min_y)) * &MAXY).floor();
 
 			//println!("{}",&zz);
@@ -498,18 +522,18 @@ impl CalState {
 			//.zip(self.expresion.iter())
 			.enumerate();
 			
-		for (_ii, mut r) in iter {
+		for (_ii, mut value) in iter {
 			// give proportion to y axe
-			if r.is_infinite() == true {
-				if r.is_sign_negative() == true {
-					r = &self.max_y;
+			if value.is_infinite() == true {
+				if value.is_sign_negative() == true {
+					value = &self.max_y;
 				}
 				else {
-					r = &self.min_y;
+					value = &self.min_y;
 				}
 			};
 			
-			let yy = ((((r   - &self.min_y)/(&self.max_y - &self.min_y)) * &YVERTICAL)/1.214285).floor();
+			let yy = ((((value   - &self.min_y)/(&self.max_y - &self.min_y)) * &YVERTICAL)/1.214285).floor();
 			//let zz = ((((0.0 - &self.min_y)/(&self.max_y - &self.min_y)) * &YVERTICAL)/1.214285).floor();
 
 			//println!("{}",&zz);
@@ -1550,14 +1574,16 @@ fn main_loop() {
 		
 		if state.show_results_expressions == true && state2.show_results_expressions == true {
 			if state.resultado.len() != 0 {
-				println!("Calculator (1)");
+				//cprintln!("<yellow>Calculator (1)</>");
+				cprintln!("<yellow>(1)      value   subtotal    expression</>");
 				state.display_results_expressions();
 			}
 			if state2.resultado.len() != 0 {
 				if state.resultado.len() != 0 {
 					println!(" ");
 				};
-				println!("Calculator (2)");
+				//cprintln!("<yellow>Calculator (2)</>");
+				cprintln!("<yellow>(2)      value   subtotal    expression</>");
 				state2.display_results_expressions();
 			}
 			print!("\n({})> ", switch_cal);
