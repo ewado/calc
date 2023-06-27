@@ -251,8 +251,11 @@ impl CalState {
 
 		let mut printing_x: String;
 		let mut subtotal: f64;
+		let mut expresion2: String = String::from(" ");
+
 		subtotal = 0.;
 		const COLUMN_WIDE: usize = 8;
+	
 		
 		let iter = self.resultado
 			.iter()
@@ -276,6 +279,14 @@ impl CalState {
 			}
 			else {
 				printing_x = String::from(" ");
+				// 2023-06-27 EP: Don't print simple expressions
+				if expresion.find('(') == None {
+					expresion2 = String::from(" ");
+				}
+				else { 
+						expresion2 = expresion.to_string();
+					}
+				
 			}
 			
 			
@@ -312,7 +323,7 @@ impl CalState {
 			let spaces_before_subtotal = " ".repeat(num_subtotal);
 			subtotal_str = subtotal_str.replace(".00","   ");
 
-			cprintln!("<black!>#{:0>2}</>  {}{}{}<black!>{}      '{}'</>  {}", i , spaces_before_result, result_str, spaces_before_subtotal, subtotal_str,  expresion, printing_x);
+			cprintln!("<black!>#{:0>2}</>  {}{}{}<black!>{}      {}</>  {}", i , spaces_before_result, result_str, spaces_before_subtotal, subtotal_str,  expresion2, printing_x);
 
 		} // End for loop
 		
@@ -1575,7 +1586,8 @@ fn main_loop() {
 		if state.show_results_expressions == true && state2.show_results_expressions == true {
 			if state.resultado.len() != 0 {
 				//cprintln!("<yellow>Calculator (1)</>");
-				cprintln!("<yellow>(1)      value   subtotal    expression</>");
+				//cprintln!("<yellow>(1)      value   subtotal    expression</>");
+				cprintln!("<yellow>(1)      value   subtotal</>");
 				state.display_results_expressions();
 			}
 			if state2.resultado.len() != 0 {
@@ -1583,7 +1595,8 @@ fn main_loop() {
 					println!(" ");
 				};
 				//cprintln!("<yellow>Calculator (2)</>");
-				cprintln!("<yellow>(2)      value   subtotal    expression</>");
+				//cprintln!("<yellow>(2)      value   subtotal    expression</>");
+				cprintln!("<yellow>(2)      value   subtotal</>");
 				state2.display_results_expressions();
 			}
 			print!("\n({})> ", switch_cal);
