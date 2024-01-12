@@ -106,7 +106,8 @@ const CSI: &str = "\x1B["; //escape
 const MAXY: f64 = 65.0;  //width of screen for graphs, max i want to show
 const XPARTITIONS: i32 = 80; // width of screen for vertical graph, x axe
 const YVERTICAL: f64 = 50.0; // highth of y axe. highth of screen for graphs, max i want to show
-const SWITCH: &str = "switch";
+const SWITCH: &str = "sw";
+const DISPLAYMODE: &str = "dm";
 
 struct AltScreen;
 
@@ -240,6 +241,7 @@ struct CalState {
 	save_file_contents: String,
 	// points: Vec<(i32, i32)>,
 	communication_area: String,
+	display_mode: i32,
 }
 
 impl CalState {
@@ -261,6 +263,7 @@ impl CalState {
 			.iter()
 			.zip(self.expresion.iter())
 			.enumerate();
+			//.peekable();
 
 		let precision = *(self.vars.get("precision").unwrap()) as usize;
 		
@@ -286,7 +289,8 @@ impl CalState {
 				expresion2 = String::from(" ");
 			}
 			else { 
-					expresion2 = expresion.to_string();
+				
+				expresion2 = expresion.to_string();
 			}
 				
 			
@@ -307,7 +311,7 @@ impl CalState {
 				num = COLUMN_WIDE + precision - result_str.len();
 			}
 			let spaces_before_result = " ".repeat(num);
-			result_str = result_str.replace(".00","   ");
+			result_str = result_str.replace(".00","   ");  // todo: generalize for any number of decimals
 
 			subtotal = subtotal + value;
 
@@ -323,9 +327,16 @@ impl CalState {
 				num_subtotal = COLUMN_WIDE + precision - subtotal_str.len();
 			}
 			let spaces_before_subtotal = " ".repeat(num_subtotal);
-			subtotal_str = subtotal_str.replace(".00","   ");
+			subtotal_str = subtotal_str.replace(".00","   ");  // todo: generalize for any number of decimals
 
-			cprintln!("<black!>#{:0>2}</>  {}{}{}<black!>{}      {}  {}</>", i , spaces_before_result, result_str, spaces_before_subtotal, subtotal_str,  expresion2, printing_x);
+			// EP: display mode controls basic or complete line display	
+			if self.display_mode == 1 {
+				cprintln!("<black!>#{:0>2}</>  {}{}{}<black!>{}      {}  {}</>", i , spaces_before_result, result_str, spaces_before_subtotal, subtotal_str,  expresion2, printing_x);
+			} else {
+				//println!("#{:0>2}  {}{}    {}  {}", i , spaces_before_result, result_str, expresion2, printing_x);
+				println!("{}{}    {}  {}", spaces_before_result, result_str, expresion2, printing_x);
+			}
+			//if iter.peek().is_none(){println!("iterator is empty")};
 
 		} // End for loop
 		
@@ -1491,6 +1502,7 @@ fn state_init() -> CalState {
 		save_line: " ".to_string(),
 		save_file_contents: " ".to_string(),
 		communication_area: " ".to_string(),
+		display_mode: 1,
 	}; 
 	return state;
 }
@@ -1535,6 +1547,7 @@ fn main_loop() {
 	
 	// clone <- Clone , implicit clone <- Copy, in general Copy implemented on all primitive types.
 	let mut switch_cal: i32 = 1;
+	let mut display_mode_temp: bool;
 
 	
 	loop {
@@ -1550,7 +1563,38 @@ fn main_loop() {
 				switch_cal = 2;
 			}
 		}
+		if input_line.trim() == DISPLAYMODE {
+			display_mode_temp = true;
+		} else {
+			display_mode_temp = false;
+		}
 		
+
+			if display_mode_temp {
+				{
+				if state2.display_mode == 2 {
+					state2.display_mode = 1;
+				} else {
+					state2.display_mode = 2;
+				}
+				if state.display_mode == 2 {
+					state.display_mode = 1;
+				} else {
+					state.display_mode = 2;
+				}
+				}
+			}
+
+		//2023-07-09 EP: add separator for '!' (iphone) between numbers and also when there is a basic operator
+		input_line = input_line.replace("!"," ");
+		input_line = input_line.replace("+"," + ");
+		input_line = input_line.replace("-"," - ");
+		input_line = input_line.replace("*"," * ");
+		input_line = input_line.replace("/"," / ");
+		
+		//let code_div: u8 = 0x00F7;
+		//input_line = input_line.replace(&code_div.to_string(),"/");
+
 		let commands: Vec<&str> = input_line.trim().split(' ').collect();
 		
 // switch between cal 1 and cal 2
@@ -1589,7 +1633,13 @@ fn main_loop() {
 			if state.resultado.len() != 0 {
 				//cprintln!("<yellow>Calculator (1)</>");
 				//cprintln!("<yellow>(1)      value   subtotal    expression</>");
-				cprintln!("<yellow>(1)      value   subtotal</>");
+
+				if state.display_mode == 1 {
+					cprintln!("<yellow>(1)      value   subtotal</>");
+				} else {
+					//println!("(1)      value");
+					println!("(1)");  
+				}
 				state.display_results_expressions();
 			}
 			if state2.resultado.len() != 0 {
@@ -1598,7 +1648,13 @@ fn main_loop() {
 				};
 				//cprintln!("<yellow>Calculator (2)</>");
 				//cprintln!("<yellow>(2)      value   subtotal    expression</>");
-				cprintln!("<yellow>(2)      value   subtotal</>");
+
+				if state.display_mode == 1 {
+					cprintln!("<yellow>(2)      value   subtotal</>");
+				} else {
+					//println!("(2)      value");
+					println!("(2)");
+				}
 				state2.display_results_expressions();
 			}
 			print!("\n({})> ", switch_cal);
